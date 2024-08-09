@@ -14,17 +14,31 @@ import { useAppStore } from './store'
 //These children can be any JSX that should only be rendered if the user is authenticated.
 const PrivateRoute=({children})=>{
   const {userInfo}=useAppStore();
-  const isAuthenticated=!!userInfo;
+  const isAuthenticated=!!userInfo;//Applying ! twice (!!) will convert any value to its boolean equivalent If userInfo is truthy (i.e., it exists and is not null, undefined, etc.), !!userInfo will evaluate to true, meaning the user is authenticated.
   return isAuthenticated?children:<Navigate to='/auth'/>
+}
+const AuthRoute=({children})=>{
+  const {userInfo}=useAppStore();
+  const isAuthenticated=!!userInfo;//Applying ! twice (!!) will convert any value to its boolean equivalent If userInfo is truthy (i.e., it exists and is not null, undefined, etc.), !!userInfo will evaluate to true, meaning the user is authenticated.
+  return isAuthenticated?<Navigate to='/chat'/>:children
 }
 const App = () => {
 
   return (
    <BrowserRouter>
    <Routes>
-    <Route path="/auth" element={<Auth/>}/>
+    <Route path="/auth" element={
+      <AuthRoute>
+      <Auth/>
+      </AuthRoute>
+      
+      }/>
     <Route path="*" element={<Auth/>}/>
-    <Route path="/chat" element={<Chat/>}/>
+    <Route path="/chat" element={
+      <PrivateRoute>
+        <Chat/>
+
+      </PrivateRoute>}/>
     <Route path="/profile" element={<Profile/>}/>
     
    </Routes>
