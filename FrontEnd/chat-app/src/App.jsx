@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from './components/ui/button'
 import { BrowserRouter, Routes,Route, Navigate } from 'react-router-dom'
 
@@ -6,6 +6,8 @@ import Auth from './pages/auth'
 import Chat from './pages/chat'
 import Profile from './pages/profile'
 import { useAppStore } from './store'
+import { apiCliet } from './lib/api-client'
+import { GET_USER_INFO } from './utils/constants'
 
 
 //The PrivateRoute component is a React functional component designed to protect certain routes or parts of your application, 
@@ -23,6 +25,37 @@ const AuthRoute=({children})=>{
   return isAuthenticated?<Navigate to='/chat'/>:children
 }
 const App = () => {
+  const {userInfo,setUserInfo}=useAppStore();
+  const {loading,setLoading}=useState(true);
+  useEffect(()=>
+  {
+    const getUserData=async()=>
+    {
+      try{
+        const response=await apiCliet.get(GET_USER_INFO,
+          {
+            withCredentials:true
+          }
+        )
+      }
+      catch(error)
+      {
+        console.log(error);
+      }
+
+    }
+    if(!userInfo)
+    {
+      getUserData()
+    }
+    else{
+        setLoading(false)
+    }
+  },[userInfo,setUserInfo])
+  if(loading)
+  {
+    return <div>Loading...</div>
+  }
 
   return (
    <BrowserRouter>
