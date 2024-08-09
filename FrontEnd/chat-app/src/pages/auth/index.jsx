@@ -7,7 +7,9 @@ import { toast } from 'sonner'
 import { apiCliet } from '../../lib/api-client'
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from '../../utils/constants'
 import {useNavigate} from "react-router-dom"
+import { useAppStore } from '../../store'
 const Auth = () => {
+    const {setUserInfo}=useAppStore();
     const navigate=useNavigate()
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
@@ -74,6 +76,7 @@ const Auth = () => {
            //session across requests.
            if(response.status===201)
             {
+                setUserInfo(response.data.user);
                 navigate("/profile")
             }
            console.log({response})
@@ -88,6 +91,7 @@ const Auth = () => {
             const response=await apiCliet.post(LOGIN_ROUTE,{email,password},{withCredentials:true})
             if(response.data.user.id)
                 {
+                    setUserInfo(response.data.user);
                     if(response.data.user.profileSetup)
                     navigate("/chat")
                     else
