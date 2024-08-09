@@ -111,3 +111,46 @@ import { compare } from "bcrypt";
         
                 }
             }
+        export const updateProfile=async (request,response,next)=>
+            {
+                const {userId}=request;
+                const {firstName,lastName,color}=request.body;
+                if(!firstName || !lastName || !color)
+                {
+                    return response.status(400).send("FirstName ,LastName,color is required")
+                }
+
+                try{
+                    const userData=await User.findByIdAndUpdate(
+                        userId,
+                        {
+                            firstName,
+                            lastName,
+                            color,
+                            profileSetup:true
+                        },
+                        {new :true,runValidators:true}//The new: true option ensures that the updated document is returned, and 
+                                                    //runValidators: true ensures that any validation rules in the schema are enforced during the update.
+                    )
+    
+                        return response.status(200).json({
+                            
+                                id:userData.id,
+                                email:userData.email,
+                                profileSetup:userData.profileSetup ,
+                                firstName:userData.firstName,
+                                lastName:userData.lastName,
+                                image:userData.image,
+                                color:userData.color
+        
+            
+                   })
+                      
+            
+                }
+                catch(error){
+                        console.log({error});
+                        return response.status(500).send("Internal Error")
+            
+                }
+            }
