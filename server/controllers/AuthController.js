@@ -10,7 +10,7 @@ import { compare } from "bcrypt";
     export const signup=async (request,response,next)=>
     {
         try{
-            console.log(request.userId);
+          
             const {email,password}=request.body;
             if(!email || !password)
             {
@@ -84,13 +84,14 @@ import { compare } from "bcrypt";
         export const getUserInfo=async (request,response,next)=>
             {
                 try{
+                    console.log(` user id: ${request.userId}`);
                     const userData=await User.findById(request.userId);
                     if(!userData)
                         return response.status(404).send("User with given id not found")
                     
 
-                    return response.status(201).json({
-                        user:{
+                    return response.status(200).json({
+                        
                             id:userData.id,
                             email:userData.email,
                             profileSetup:userData.profileSetup ,
@@ -100,7 +101,7 @@ import { compare } from "bcrypt";
                             color:userData.color
     
         
-                    }})
+                    })
                   
         
                 }
