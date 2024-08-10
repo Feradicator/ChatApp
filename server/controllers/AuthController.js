@@ -1,6 +1,8 @@
     import jwt from "jsonwebtoken";//This line imports the sign function from the jsonwebtoken library, which is used to create JSON Web Tokens (JWTs).
     import User from "../models/UserModel.js";
+
 import { compare } from "bcrypt";
+import {renameSync,unlinkSync} from 'fs'
     const maxAge=3*24*60*60*1000//3 days json web token valid
     const createToken=(email,userId)=>{
         return jwt.sign({email,userId},process.env.JWT_KEY,{expiresIn:maxAge})
@@ -154,3 +156,65 @@ import { compare } from "bcrypt";
             
                 }
             }
+            export const addProfileImage=async (request,response,next)=>
+                {
+                    
+    
+                    try{
+                       if(!request.file)
+                       {
+                        return response.status(400).send("File is required");
+
+                       }
+                       const date=Date.now();
+                       let fileName="uploads/profiles/" + date+request.file.originalname;
+                       //The renameSync Function The renameSync function from the fs module takes two arguments:1. Old Path (oldPath)
+                       //2.The current file path, which is where the file is currently stored.
+
+                       renameSync(request.file.path,fileName)
+                       const updatedUser=await User.findByIdAndUpdate(
+                        request.userId,
+                        {image:fileName},
+                        {new: true,runValidators:true}
+
+                       )
+                            return response.status(200).json({
+                                image:updatedUser.image,
+
+                       })
+                          
+                
+                    }
+                    catch(error){
+                            console.log({error});
+                            return response.status(500).send("Internal Error")
+                
+                    }
+                }
+                export const removeProfileImage=async (request,response,next)=>
+                    {
+                        try{
+                       const {userId}=request;
+                       const user=await User.findById(userId)
+                        
+                       if(!user)
+                       {
+                        return response.status(404).send('user not found')
+                       }
+                       if(user.image)
+                       {
+                        unlinkSync(user.image)
+
+                       }
+                       user.image=null;
+                       await user.save();
+                        return response.status(200).send("Profile Image Removed successfully")
+                              
+                    
+                        }
+                        catch(error){
+                                console.log({error});
+                                return response.status(500).send("Internal Error")
+                    
+                        }
+                    }
