@@ -4,6 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Input } from "../../../../../../components/ui/input";
 import { FaPlus } from "react-icons/fa";
@@ -18,8 +19,9 @@ import {
 import { animationDefaultOptions } from "@/lib/utils";
 import Lottie from "react-lottie";
 import { useState } from "react";
-import { SEARCH_CONTACTS_ROUTES } from "../../../../../../utils/constants";
+import { HOST, SEARCH_CONTACTS_ROUTES } from "../../../../../../utils/constants";
 import { apiCliet } from "../../../../../../lib/api-client";
+import { getColor } from "../../../../../../lib/utils";
 const NewDm = () => {
   const [openNewContactModal, setopenNewContactModal] = useState(false);
   const [searchedContacts, setsearchedContacts] = useState([]);
@@ -41,6 +43,10 @@ const NewDm = () => {
       console.log({ error });
     }
   };
+  const selectNewContact=(contact)=>
+  {
+
+  }
   return (
     <>
       <TooltipProvider>
@@ -74,9 +80,46 @@ const NewDm = () => {
               {searchedContacts.map((contact) => (
                 <div
                   key={contact._id}
-                  className="flex gap-3 items-center
-cursor-pointer"
-                ></div>
+                  className="flex gap-3 items-center cursor-pointer"
+                  onClick={()=>
+                  {
+                    selectNewContact(contact)
+                  }
+                  }
+                >
+                  <div className="w-12 h-12 relative">
+                    <Avatar className="h-12 w-12 rounded-full overflow-hidden">
+                      {contact.image ? (
+                        <AvatarImage
+                          src={`${HOST}/${contact.image}`}
+                          alt="profile"
+                          className="object-cover w-full h-full Obg-black"
+                        />
+                      ) : (
+                        <div
+                          className={`uppercase h-12 w-12  text-lg border-[1px] flex items-center justify-center rounded-full 
+        ${getColor(contact.color)}`}
+                        >
+                          {contact.firstName
+                            ? contact.firstName.split("").shift()
+                            : contact.email.split("").shift()}
+                        </div>
+                      )}
+                    </Avatar>
+                  </div>
+                  <div className="flex flex-col">
+                    <span>
+                    {contact.firstName && contact.lastName
+            ? `${contact.firstName} ${contact.lastName}`
+            : ""}
+                    </span>
+                    <span className="text-xs">
+                      {contact.email}
+                    </span>
+                 
+
+                  </div>
+                </div>
               ))}
             </div>
           </ScrollArea>
