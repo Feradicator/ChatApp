@@ -218,3 +218,17 @@ import {renameSync,unlinkSync} from 'fs'
                     
                         }
                     }
+                    export const logOut=async (request,response,next)=>
+                        {
+                            try{
+                                response.cookie("jwt","",{maxAge:1,secure:true,sameSite:"None"})
+                                response.status(200).send("LogOut Successfull")
+                           
+                        
+                            }
+                            catch(error){
+                                    console.log({error});
+                                    return response.status(500).send("Internal Error")
+                        
+                            }
+                        }
