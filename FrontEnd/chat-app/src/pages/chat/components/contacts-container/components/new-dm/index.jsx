@@ -22,7 +22,9 @@ import { useState } from "react";
 import { HOST, SEARCH_CONTACTS_ROUTES } from "../../../../../../utils/constants";
 import { apiCliet } from "../../../../../../lib/api-client";
 import { getColor } from "../../../../../../lib/utils";
+import { useAppStore } from "../../../../../../store";
 const NewDm = () => {
+    const {setSelectedChatType,setSelectedChatData}=useAppStore();
   const [openNewContactModal, setopenNewContactModal] = useState(false);
   const [searchedContacts, setsearchedContacts] = useState([]);
   const searchContacts = async (searchTerm) => {
@@ -45,6 +47,10 @@ const NewDm = () => {
   };
   const selectNewContact=(contact)=>
   {
+    setopenNewContactModal(false);
+    setSelectedChatType("contact")
+    setSelectedChatData(contact)
+    setsearchedContacts([]);
 
   }
   return (
