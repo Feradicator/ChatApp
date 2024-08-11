@@ -4,6 +4,7 @@ import cors from "cors"
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import authRoutes from './routes/AuthRoutes.js'
+import contactsRoutes from './routes/ContactRoutes.js'
 
 dotenv.config()//due to this command all the environment variables will be inside process.env which has been written inside .env
 const app=express();//creating instance of express
@@ -26,6 +27,7 @@ app.use('/uploads/profiles',express.static("uploads/profiles"))
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth",authRoutes)
+app.use("/api/contacts",contactsRoutes)
 
 const server=app.listen(port,()=>
 {
