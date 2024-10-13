@@ -22,15 +22,15 @@ const Auth = () => {
                 toast.error("Email is Required")
                 return false;
             }
-            else if(!password.length)
-                {
-                    toast.error("Password is Required")
-                    return false;
-                }
+        else if(!password.length)
+            {
+                toast.error("Password is Required")
+                return false;
+             }
             
            
-            else 
-            return true;
+        else 
+        return true;
 
     }
     const validateSignup=()=>{

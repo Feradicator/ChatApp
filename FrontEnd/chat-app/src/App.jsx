@@ -27,7 +27,10 @@ const AuthRoute=({children})=>{
 const App = () => {
   const {userInfo,setUserInfo}=useAppStore();
   const [loading,setLoading]=useState(true);
-  useEffect(()=>
+  useEffect(()=>//we are using useeffect here because to populate store with userinfo,initially when user is not logged in ,so it wont get any data from async function
+                 //after user gets loged in it sets userinfo,then it since userinfo changed and useeffect is depenedent on it so it re renders due which it populates
+                 //store ,since we have populated store at top means in App.js so even if there is re-render inside the child commpoenets stores memory will not
+                 //be loss and we can access userinfo from store any where.actually due to reload of page memory gets clear from store
   {
     const getUserData=async()=>
     {
