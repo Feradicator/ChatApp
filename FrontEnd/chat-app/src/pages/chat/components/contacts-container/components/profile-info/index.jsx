@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { useAppStore } from "../../../../../../store";
 import { HOST, LOGOUT_ROUTE } from "../../../../../../utils/constants";
+import { getColor } from "../../../../../../lib/utils";
 import {
   Tooltip,
   TooltipContent,

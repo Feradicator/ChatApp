@@ -53,6 +53,7 @@ const NewDm = () => {
     setsearchedContacts([]);
 
   }
+  
   return (
     <>
       <TooltipProvider>
@@ -117,7 +118,7 @@ const NewDm = () => {
                     <span>
                     {contact.firstName && contact.lastName
             ? `${contact.firstName} ${contact.lastName}`
-            : ""}
+            : contact.email}
                     </span>
                     <span className="text-xs">
                       {contact.email}
