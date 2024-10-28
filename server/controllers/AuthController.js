@@ -168,8 +168,8 @@ import {renameSync,unlinkSync} from 'fs'
                        }
                        const date=Date.now();
                        let fileName="uploads/profiles/" + date+request.file.originalname;
-                       //The renameSync Function The renameSync function from the fs module takes two arguments:1. Old Path (oldPath)
-                       //2.The current file path, which is where the file is currently stored.
+                       // The renameSync function from the fs module takes two arguments:1. Old Path (oldPath)
+                       //2.The new file path, which is where the file is going to get stored.
 
                        renameSync(request.file.path,fileName)
                        const updatedUser=await User.findByIdAndUpdate(

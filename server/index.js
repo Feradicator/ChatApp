@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import authRoutes from './routes/AuthRoutes.js'
 import contactsRoutes from './routes/ContactRoutes.js'
+import setUpSocket from './socket.js'
 
 dotenv.config()//due to this command all the environment variables will be inside process.env which has been written inside .env
 const app=express();//creating instance of express
@@ -17,7 +18,7 @@ app.use(
         credentials:true//it is used to enable cokies
     })
 );
-app.use('/uploads/profiles',express.static("uploads/profiles"))
+app.use('/uploads/profiles',express.static("uploads/profiles"))//it is used to retrieve saved images    
 
 //app.use('/uploads/profiles', ...): This tells your Express application to use a specific middleware for all requests that start with /uploads/profiles.
 //Essentially, any request that matches this path (e.g., /uploads/profiles/user123.jpg) will be handled by the middleware specified as the second argument.
@@ -33,6 +34,6 @@ const server=app.listen(port,()=>
 {
     console.log(`Server is running at port ${port}`)
 });
-
+setUpSocket(server);
 mongoose.connect(databaseURL).then(()=>console.log('DB connection successfull'))
 .catch((err)=>console.log(err.message));
